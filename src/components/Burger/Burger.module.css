@@ -1,0 +1,38 @@
+.Burger {
+  width: 100%;
+  margin: auto;
+  height: 25rem;
+  overflow: scroll;
+  text-align: center;
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+@media (min-width: 31.25em) and (min-height: 25em) {
+  .Burger {
+    width: 35rem;
+    height: 30rem;
+  }
+}
+
+
+@media (min-width: 31.25em) and (min-height: 25em) {
+  .Burger {
+    width: 35rem;
+    height: 30rem;
+  }
+}
+
+@media (min-width: 31.25em) and (min-height: 25.0625em) {
+  .Burger {
+    width: 45rem;
+    height: 40rem;
+  }
+}
+
+@media (min-width: 62.5em) and (min-height: 43.75em) {
+  .Burger {
+    width: 70rem;
+    height: 60rem;
+  }
+}
