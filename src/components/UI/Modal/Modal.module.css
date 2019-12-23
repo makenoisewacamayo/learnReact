@@ -1,0 +1,73 @@
+.Modal {
+  position: fixed;
+  z-index: 500;
+  background-color: white;
+  width: 70vw;
+  border: 1px solid #ccc;
+  box-shadow: 1px 1px 1px black;
+  padding: 1.6rem;
+  left: 15%;
+  top: 30%;
+  box-sizing: border-box;
+  transition: all;
+}
+
+.Modal[open] {
+  -webkit-animation: slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+	        animation: slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+.Modal::backdrop {
+  background: rgba(0, 0, 0, .5);
+  z-index: 100;
+} 
+
+@media (min-width: 37.5em) {
+  .Modal {
+      width: 50rem;
+      left: calc(50% - 25rem);
+  }
+}
+
+
+@-webkit-keyframes slide-top {
+  0% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  100% {
+    -webkit-transform: translateY(-10rem);
+            transform: translateY(-10rem);
+  }
+}
+@keyframes slide-top {
+  0% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  100% {
+    -webkit-transform: translateY(-10rem);
+            transform: translateY(-10rem);
+  }
+}
+
+@-webkit-keyframes slide-bottom {
+  0% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  100% {
+    -webkit-transform: translateY(10rem);
+            transform: translateY(10rem);
+  }
+}
+@keyframes slide-bottom {
+  0% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  100% {
+    -webkit-transform: translateY(10rem);
+            transform: translateY(10rem);
+  }
+}
