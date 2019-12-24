@@ -1,41 +1,52 @@
-import React, { useRef, useEffect } from 'react';
+import React, { Component } from 'react';
 import Proptype from 'prop-types';
 import dialogPolyfill from 'dialog-polyfill'
 import classes from './Modal.module.css';
-import Aux from '../../../hoc/Aux';
+import Aux from '../../../hoc/Aux/Aux';
 import Backdrop from '../Backdrop/Backdrop';
 
-const modal = (props) => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const dialogRef = useRef(null);
+class Modal extends Component {
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  useEffect(() => { 
-    dialogPolyfill.registerDialog(dialogRef.current);
-    displayIt(props.show)
-  });
+  constructor(props) {
+    super(props)
+    this.dialogRef =  React.createRef();
+  }
 
-  const displayIt = (show) => {
+  shouldComponentUpdate(nextProps, nextState) {
+    if ( nextProps.show !== this.props.show ) {
+      this.displayIt(nextProps.show);
+      return true;
+    };
+    return false
+  }
+
+  componentDidMount() { 
+    dialogPolyfill.registerDialog(this.dialogRef.current);
+  }
+
+  displayIt = (show) => {
     if ( show ) {
-      dialogRef.current.showModal();
+      this.dialogRef.current.showModal();
     } else {
-      dialogRef.current.close();
+      this.dialogRef.current.close();
     }
   } 
 
-  return (
-    <Aux>
-      <Backdrop show={props.show} clicked={props.modalClose}/>
-      <dialog ref={dialogRef} className={classes.Modal} >
-        {props.children}
-      </dialog>
-    </Aux>
-  );
+  render() {
+    return (
+      <Aux>
+        <Backdrop show={this.props.show} clicked={this.props.modalClose}/>
+        <dialog ref={this.dialogRef} className={classes.Modal} >
+          {this.props.children}
+        </dialog>
+      </Aux>
+    );
+  }
 };
 
-modal.propType = {
+Modal.propType = {
   show: Proptype.bool.isRequired,
   modalClose: Proptype.func.isRequired
 }
 
-export default modal;
+export default Modal;
