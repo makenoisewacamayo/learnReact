@@ -1,12 +1,15 @@
 .Logo {
   background-color: white;
-  padding: .8rem;
+  padding: .5rem;
   height: 100%;
   box-sizing: border-box;
-  border-radius: .5rem;
+  border-radius: .3rem;
+  display: flex;
+  align-items: center
 }
 
 .Logo img {
-  height: 100%;
+  width: 2rem;
+  height: 1rem;
 }
 

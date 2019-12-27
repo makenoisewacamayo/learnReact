@@ -13,7 +13,7 @@ class Modal extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if ( nextProps.show !== this.props.show ) {
+    if ( nextProps.show !== this.props.show || nextProps.children !== this.props.children) {
       this.displayIt(nextProps.show);
       return true;
     };
@@ -22,13 +22,15 @@ class Modal extends Component {
 
   componentDidMount() { 
     dialogPolyfill.registerDialog(this.dialogRef.current);
+    this.displayIt(this.props.show);
   }
 
   displayIt = (show) => {
-    if ( show ) {
-      this.dialogRef.current.showModal();
+    const dialog = this.dialogRef.current;
+    if ( show) {
+      return dialog.open !== true ? dialog.showModal() : null;
     } else {
-      this.dialogRef.current.close();
+     dialog.close();
     }
   } 
 

@@ -1,5 +1,5 @@
 .Toolbar {
-  height: 8vh;
+  height: 11vh;
   width: 100vw;
   position: fixed;
   top: 0;
@@ -18,7 +18,7 @@
 }
 
 .Logo {
-  height: 80%;
+  height: 95%;
 }
 
 @media (max-width: 499px) {
