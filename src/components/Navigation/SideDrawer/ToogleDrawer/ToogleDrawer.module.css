@@ -13,4 +13,8 @@
   .ToogleDrawer {
     display: none;
   }
+
+  .isDesktop {
+    display: none;
+  }
 }
