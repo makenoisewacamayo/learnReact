@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import Burger from '../../Burger/Burger';
 import Button from '../../UI/Button/Button';
 import classes from './CheckoutSummary.module.css';
@@ -12,12 +14,24 @@ const checkoutSummary = (props) => {
       </div>
       <Button 
         btnType="Danger"
-        clicked>CLOSE</Button>
+        clicked={props.checkoutCancelled}>CLOSE</Button>
       <Button 
         btnType="Success"
-        clicked>CONTINUE</Button>
+        clicked={props.checkoutContinue}>CONTINUE</Button>
     </div>
   );
 }
+
+checkoutSummary.propTypes = {
+  ingredients: PropTypes.shape({
+    salad: PropTypes.number,
+    bacon: PropTypes.number,
+    cheese: PropTypes.number,
+    meat: PropTypes.number,
+  }).isRequired,
+  checkoutCancelled: PropTypes.func,
+  checkoutContinue: PropTypes.func
+}
+
 
 export default checkoutSummary;

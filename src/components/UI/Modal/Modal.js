@@ -48,7 +48,8 @@ class Modal extends Component {
 
 Modal.propType = {
   show: Proptype.bool.isRequired,
-  modalClose: Proptype.func.isRequired
+  modalClose: Proptype.func.isRequired,
+  children: Proptype.element.isRequired
 }
 
 export default Modal;
