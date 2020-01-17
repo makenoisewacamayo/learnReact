@@ -11,3 +11,7 @@ export const PURCHASE_INIT = '[Checkout] set purchased flag'
 export const FETCH_ORDERS_INIT = '[Orders] start call to get orders';
 export const FETCH_ORDERS_SUCCESS = '[Orders] get orders from backend';
 export const FETCH_ORDERS_FAIL = '[Orders] fail to get orders';
+
+export const AUTH_START = '[Auth] Auth start';
+export const AUTH_SUCCESS = '[Auth] Auth Success';
+export const AUTH_FAIL = '[Auth] Auth fail';
