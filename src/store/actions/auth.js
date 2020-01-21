@@ -1,9 +1,15 @@
 import * as actionTypes from './actionTypes';
+import jwt from 'jsonwebtoken';
+import * as util from 'util';
+import axios from '../../axios-orders';
 import firebase from '../../config/firebaseConfig';
 
-const setStorage = (token, experationTime) => {
+const jwtverify = util.promisify(jwt.verify);
+
+
+const setStorage = (token, expirationTime) => {
   localStorage.setItem('token', token);
-  localStorage.setItem('experationTime', new Date().parse(experationTime));
+  localStorage.setItem('expirationTime', expirationTime)
 }
 
 const removeStorage = () => {
@@ -14,12 +20,12 @@ const removeStorage = () => {
 const getToken = (user, dispatch) => {
     firebase.auth().currentUser.getIdTokenResult()
       .then(function(tokenResult) {
+        console.log('[currentUser.getIdToken()]: ', tokenResult);
         const userData = {
           token: tokenResult.token,
-          expirationTime: tokenResult.expirationTime,
           userId: user.user.uid
         }
-        setStorage( userData.token, userData.expirationTime);
+        setStorage(tokenResult.token, tokenResult.expirationTime);
         dispatch(authSucess(userData));
         dispatch(checkAuthTimeout(tokenResult.expirationTime));
       });
@@ -73,7 +79,6 @@ export const auth = (email, password, method) => {
            getToken(user, dispatch);
         })
         .catch(function(error) {
-            removeStorage();
             dispatch(authFail(error));
         });
     } else {
@@ -83,7 +88,6 @@ export const auth = (email, password, method) => {
         getToken(user, dispatch);
       })
       .catch(function(error) {
-        removeStorage();
         dispatch(authFail(error));
       });
     }
@@ -101,13 +105,33 @@ export const setAuthRedirectPath = (path) => {
 export const authCheckState = () => {
   return dispatch => {
     const token = localStorage.getItem('token');
-    firebase.auth().signInWithCustomToken(token)
-    .then( function (user) {
-        console.log('[signInWithCustomToken]', user);
+    if (!token) {
+      console.log('token not in localStorage ')
+      return;
+    }
+    dispatch(authStart());
+  
+    axios.get('https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com')
+    .then(response => {
+      const publicKeys = response.data;
+      const headers = [...token.split(".")];
+      const header = JSON.parse(Buffer.from(headers[0], 'base64').toString('ascii'));
+      jwtverify(token, publicKeys[header.kid], { algorithms: [ header.alg ]})
+      .then((result) => {
+        const userData = {
+          token: token,
+          userId: result.user_id,
+        }
+        dispatch(authSucess(userData));
+      })
+      .catch((error) => {
+        console.log(error)
+        dispatch(logout());
+      });
     })
-    .catch(function(error) {
-      removeStorage();
-      dispatch(authFail(error))
+    .catch(error => {
+      dispatch(authFail(error));
     })
+    
   }
 }

@@ -2,6 +2,7 @@
 
 # hide files with keys
 /src/config/secrets.js
+/src/config/serviceAccount.json
 
 # dependencies
 /node_modules
