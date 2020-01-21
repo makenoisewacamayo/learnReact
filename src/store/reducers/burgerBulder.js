@@ -4,7 +4,8 @@ import  * as helpers from '../helpers/utility';
 const initialState = {
   ingredients: null,
   totalPrice: 4,
-  error: false
+  error: false,
+  building: false,
 };
 
 const addIngredient = (state, action) => {

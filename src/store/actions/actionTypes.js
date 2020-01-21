@@ -15,3 +15,6 @@ export const FETCH_ORDERS_FAIL = '[Orders] fail to get orders';
 export const AUTH_START = '[Auth] Auth start';
 export const AUTH_SUCCESS = '[Auth] Auth Success';
 export const AUTH_FAIL = '[Auth] Auth fail';
+export const AUTH_LOGOUT = '[Auth] Auth Logout';
+
+export const SET_AUTH_REDIRECT_PATH = '[Auth] Set Auth redirect path';

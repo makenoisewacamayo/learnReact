@@ -15,6 +15,7 @@ export const updateIngredientState= (state, action, qty, factor = 1) => {
        [action.ingredientName]: qty,
     },
     totalPrice: state.totalPrice + ( ingredient * factor),
+    building: true,
   }
 }
 
@@ -29,6 +30,7 @@ export const resetBurgerBuilderState = (state, action) => {
       },
       totalPrice: 4,
       error: false,
+      building: false,
   }
 }
 

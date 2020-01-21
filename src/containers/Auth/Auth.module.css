@@ -8,6 +8,14 @@
   box-sizing: border-box;
 
 }
+
+.AuthError {
+  width: 90%;
+  text-align: center;
+  color: orangered;
+  font-weight: bold;
+  text-transform: uppercase;
+}
 .Auth .Input {
   display: block;
   margin: 0 .5rem;

@@ -10,12 +10,14 @@ import thunk from 'redux-thunk';
 import './index.css';
 import burgerBuilderReducer from './store/reducers/burgerBulder';
 import orderReducer from './store/reducers/order';
+import authReducer from './store/reducers/auth';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 const rootReducers = combineReducers({
   burgerBuilder: burgerBuilderReducer,
-  order: orderReducer
+  order: orderReducer,
+  auth: authReducer,
 })
 
 const store = createStore(rootReducers, composeWithDevTools(
