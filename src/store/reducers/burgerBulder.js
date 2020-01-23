@@ -1,5 +1,5 @@
 import *  as actionTypes from '../actions/actionTypes'
-import  * as helpers from '../helpers/utility';
+import  * as helpers from '../../shared/utility';;
 
 const initialState = {
   ingredients: null,
@@ -9,7 +9,7 @@ const initialState = {
 };
 
 const addIngredient = (state, action) => {
-  return helpers.updateIngredientState(state, action, state.ingredients[action.ingredientName] + 1)
+  return helpers.updateIngredientState(state, action, state.ingredients[action.ingredientName] + 1);
 }
 
 const removeIngredient = (state, action) => {

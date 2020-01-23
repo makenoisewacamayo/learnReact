@@ -31,6 +31,7 @@ class Layout extends Component {
          drawerToogleClicked={this.sideDrawerToogleHandler}
         />
       <SideDrawer
+        isAuth={this.props.isAuthenticated}
         open={this.state.showSideDrawer}
         closed={this.sideDrawerCloseHandler}/>
       <main className={classes.Content}>

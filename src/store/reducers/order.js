@@ -1,5 +1,5 @@
 import * as actionTypes from '../actions/actionTypes';
-import { updateState } from '../helpers/utility';
+import { updateState } from '../../shared/utility';
 
 const initialState = {
   orders: [],
@@ -21,7 +21,7 @@ const fetchOrders = (state, action) => {
 }
 
 const purchaseInit = (state) => {
-  return updateState(state, { purchased: false, error: false });
+  return updateState(state, { purchased: true, error: false });
 }
 
 const ordersSuccess = (state, action) => {

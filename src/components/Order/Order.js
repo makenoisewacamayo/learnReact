@@ -2,7 +2,6 @@ import React from 'react';
 import classes from './Order.module.css';
 
 const order = (props) => {
-  console.log('[Order]:  ',  props)
   
   const ingredients = Object.keys(props.ingredients)
     .map( ingredientName => {

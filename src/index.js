@@ -18,11 +18,10 @@ const rootReducers = combineReducers({
   burgerBuilder: burgerBuilderReducer,
   order: orderReducer,
   auth: authReducer,
-})
+});
 
-const store = createStore(rootReducers, composeWithDevTools(
-  applyMiddleware(thunk),
-));
+const devEnv = process.env.NODE_ENV === 'development';
+const store = createStore(rootReducers, devEnv ? composeWithDevTools(applyMiddleware(thunk)) : applyMiddleware(thunk));
 
 const app = (
   <Provider store={store}>

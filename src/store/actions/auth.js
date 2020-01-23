@@ -20,7 +20,6 @@ const removeStorage = () => {
 const getToken = (user, dispatch) => {
     firebase.auth().currentUser.getIdTokenResult()
       .then(function(tokenResult) {
-        console.log('[currentUser.getIdToken()]: ', tokenResult);
         const userData = {
           token: tokenResult.token,
           userId: user.user.uid
@@ -106,7 +105,6 @@ export const authCheckState = () => {
   return dispatch => {
     const token = localStorage.getItem('token');
     if (!token) {
-      console.log('token not in localStorage ')
       return;
     }
     dispatch(authStart());
@@ -125,7 +123,7 @@ export const authCheckState = () => {
         dispatch(authSucess(userData));
       })
       .catch((error) => {
-        console.log(error)
+        dispatch(authFail(error));
         dispatch(logout());
       });
     })
