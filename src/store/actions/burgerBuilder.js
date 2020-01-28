@@ -27,12 +27,6 @@ export const fetchIngredientsFail = () => {
   }
 }
 
-export const startedIngredients = () => {
-  return {
-    type: actionTypes.STARTED_INGREDIENTS,
-  }
-}
-
 export const initIngredients = () => {
   return { 
     type: actionTypes.INIT_INGREDIENTS,

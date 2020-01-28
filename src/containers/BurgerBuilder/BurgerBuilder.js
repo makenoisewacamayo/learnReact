@@ -21,6 +21,7 @@ export class BurgerBuilder extends Component {
   }
 
   componentDidMount() {
+    console.log('lala');  
     this.props.onInitIngredients();
   }
 
@@ -114,7 +115,7 @@ const mapDispatchToProps = dispatch => {
   return {
     onIngredientAdded: (ingredient) => dispatch(actions.addIngredient(ingredient)),
     onIngredientRemoved: (ingredient) => dispatch(actions.removeIngredient(ingredient)),
-    onInitIngredients: () => dispatch(actions.startedIngredients()),
+    onInitIngredients: () => dispatch(actions.initIngredients()),
     onInitPurchase: () => dispatch(actions.purchaseInit()),
     onSetAuthRedirectPath: (path) => dispatch(actions.setAuthRedirectPath(path))
   }
