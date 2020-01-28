@@ -21,7 +21,6 @@ export class BurgerBuilder extends Component {
   }
 
   componentDidMount() {
-    console.log('lala');  
     this.props.onInitIngredients();
   }
 
