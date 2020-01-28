@@ -114,7 +114,7 @@ const mapDispatchToProps = dispatch => {
   return {
     onIngredientAdded: (ingredient) => dispatch(actions.addIngredient(ingredient)),
     onIngredientRemoved: (ingredient) => dispatch(actions.removeIngredient(ingredient)),
-    onInitIngredients: () => dispatch(actions.initIngredients()),
+    onInitIngredients: () => dispatch(actions.startedIngredients()),
     onInitPurchase: () => dispatch(actions.purchaseInit()),
     onSetAuthRedirectPath: (path) => dispatch(actions.setAuthRedirectPath(path))
   }

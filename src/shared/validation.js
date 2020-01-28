@@ -4,6 +4,10 @@ const checkValidate = (value, rules) => {
     return true;
   }
 
+  if (!value) {
+    return false;
+  }
+
   if (rules.required) {
     isValid = value.trim() !== '' && isValid;
   }
