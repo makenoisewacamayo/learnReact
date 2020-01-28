@@ -1,4 +1,4 @@
-import { put, delay } from 'redux-saga/effects';
+import { put, delay, call } from 'redux-saga/effects';
 import jwt from 'jsonwebtoken';
 import * as util from 'util';
 
@@ -27,7 +27,7 @@ function* getToken (user ) {
       token: tokenResult.token,
       userId: user.user.uid
     }
-    setStorage(tokenResult.token, tokenResult.expirationTime);
+    yield call(setStorage, tokenResult.token, tokenResult.expirationTime);
     yield put(actions.authSucess(userData));
     yield put(actions.checkAuthTimeout(tokenResult.expirationTime));
   } catch (error) {
@@ -44,14 +44,27 @@ export function* authUserSaga(action) {
     } else {
       user = yield firebase.auth().signInWithEmailAndPassword(action.email, action.password)
     }
-    yield getToken(user);
+    yield call(getToken, user);
   } catch (error) {
     yield put(actions.authFail(error))
   }
 }
 
+function* verifyToken(token, publicKeys, header) {
+  try {
+    const result = yield jwtverify(token, publicKeys[header.kid], { algorithms: [ header.alg ]});
+    const userData = {
+      token: token,
+      userId: result.user_id,
+    }
+    yield put(actions.authSucess(userData));
+  } catch (error) {
+    throw error;
+  }
+}
+
 export function* authCheckStateSaga(action) {
-    const token = localStorage.getItem('token');
+    const token = yield call([localStorage, 'getItem'], 'token');
     if (!token) {
       return;
     }
@@ -61,16 +74,7 @@ export function* authCheckStateSaga(action) {
       const publicKeys = response.data;
       const headers = [...token.split(".")];
       const header = JSON.parse(Buffer.from(headers[0], 'base64').toString('ascii'));
-      try {
-        const result = yield jwtverify(token, publicKeys[header.kid], { algorithms: [ header.alg ]});
-        const userData = {
-          token: token,
-          userId: result.user_id,
-        }
-        yield put(actions.authSucess(userData));
-      } catch (error) {
-        throw error;
-      }
+      yield verifyToken(token, publicKeys, header)
     } catch (error) {
       yield put(actions.authFail(error));
       yield put(actions.logout());
