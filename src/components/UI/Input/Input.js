@@ -31,6 +31,7 @@ const input = (props) => {
         className={inputClasses.join(' ')}
         value={props.value}
         onChange={props.changed}
+        autoComplete={props.elementConfig.autocomplete && null}
         >
          {props.elementConfig.options.map( option => {
           return <option key={option.value} value={option.value}>{option.displayValue}</option>

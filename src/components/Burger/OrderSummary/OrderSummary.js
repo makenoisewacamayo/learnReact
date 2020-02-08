@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '../../UI/Button/Button';
 import Aux from '../../../hoc/Aux/Aux';
 
-const orderSummary = (props) => {
+const orderSummary = props => {
 
   const ingredientSummary = Object.keys(props.ingredients)
     .map( key => {
@@ -19,7 +19,7 @@ const orderSummary = (props) => {
       <ul>
         {ingredientSummary}
       </ul>
-      <p>Total price: <strong>{props.totalPrice.toFixed(2)}</strong></p>
+      <p>Total price: <strong>{props.price.toFixed(2)}</strong></p>
       <p>Continue Checkout?</p>
       <Button btnType="Danger" clicked={props.cancelPurchase}>Cancel</Button>
       <Button btnType="Success" clicked={props.continuePurchase}>Continue</Button>
@@ -34,7 +34,7 @@ orderSummary.propTypes = {
     cheese: PropTypes.number,
     meat: PropTypes.number,
   }).isRequired,
-  totalPrice: PropTypes.number.isRequired,
+  price: PropTypes.number.isRequired,
   cancelPurchase: PropTypes.func.isRequired,
   continuePurchase: PropTypes.func.isRequired,
 }
