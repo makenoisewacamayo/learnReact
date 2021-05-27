@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 
 import axios from '../../../axios-orders';
@@ -14,106 +14,115 @@ import { updateState } from '../../../shared/utility';
 import checkValidate from '../../../shared/validation'
 
 const ContactData = props => {
+  const ings = useSelector(state => state.burgerBuilder.ingredients);
+  const price = useSelector(state => state.burgerBuilder.totalPrice);
+  const loading= useSelector(state =>  state.order.loading);
+  const token = useSelector(state => state.auth.token);
+  const userId = useSelector( state => state.auth.userId);
+
+  const dispatch = useDispatch();
+  const onOrderBurger = (orderData, token) =>  dispatch(actions.purchaseBurger(orderData, token));
+
   const [formIsValid, setFormIsValid] = useState(false);
   const [orderForm, setOrderForm] = useState({
-      name: {
-        elementType: 'input',
-        elementConfig: {
-          name: 'name',
-          id: 'name',
-          type: 'text',
-          placeholder: 'Your name',
-          autoComplete: 'name'
-        },
-        value: '',
-        validation: {
-          required: true,
-        },
-        valid: false,
-        touched: false,
+    name: {
+      elementType: 'input',
+      elementConfig: {
+        name: 'name',
+        id: 'name',
+        type: 'text',
+        placeholder: 'Your name',
+        autoComplete: 'name'
       },
-      street: {
-        elementType: 'input',
-        elementConfig: {
-          name: 'street',
-          id: 'street',
-          type: 'text',
-          placeholder: 'Your Street',
-          autoComplete: 'street-address'
-        },
-        value: '',
-        validation: {
-          required: true,
-        },
-        valid: false,
-        touched: false,
+      value: '',
+      validation: {
+        required: true,
       },
-      zipCode: {
-        elementType: 'input',
-        elementConfig: {
-          name: 'zipcode',
-          id: 'zipcode',
-          type: 'text',
-          placeholder: 'zip code',
-          autoComplete: 'postal-code'
-        },
-        value: '',
-        validation: {
-          required: true,
-          minLength: 5,
-          maxLength: 5,
-        },
-        valid: false,
-        touched: false,
+      valid: false,
+      touched: false,
+    },
+    street: {
+      elementType: 'input',
+      elementConfig: {
+        name: 'street',
+        id: 'street',
+        type: 'text',
+        placeholder: 'Your Street',
+        autoComplete: 'street-address'
       },
-      country: {
-        elementType: 'input',
-        elementConfig: {
-          name: 'country',
-          id: 'country',
-          type: 'text',
-          placeholder: 'Country',
-          autoComplete: 'country'
-        },
-        value: '',
-        validation: {
-          required: true,
-        },
-        valid: false,
-        touched: false,
+      value: '',
+      validation: {
+        required: true,
       },
-      email: {
-        elementType: 'input',
-        elementConfig: {
-          name: 'email',
-          id: 'email',
-          type: 'email',
-          placeholder: 'Your email',
-          autoComplete: 'email'
-        },
-        value: '',
-        validation: {
-          required: true,
-        },
-        valid: false,
-        touched: false,
+      valid: false,
+      touched: false,
+    },
+    zipCode: {
+      elementType: 'input',
+      elementConfig: {
+        name: 'zipcode',
+        id: 'zipcode',
+        type: 'text',
+        placeholder: 'zip code',
+        autoComplete: 'postal-code'
       },
-      deliveryMethod: {
-        elementType: 'select',
-        elementConfig: {
-          name: 'deliverymethod',
-          id: 'deliverymethod',
-          options:[
-            {value: 'fastest', displayValue: 'Fastest'},
-            {value: 'cheapest', displayValue: 'Cheapest'}
-          ],
-          autoComplete: 'shipping'
-        },
-        valid: true,
-        validation: {},
-        value: 'fastest'
+      value: '',
+      validation: {
+        required: true,
+        minLength: 5,
+        maxLength: 5,
       },
-    });
+      valid: false,
+      touched: false,
+    },
+    country: {
+      elementType: 'input',
+      elementConfig: {
+        name: 'country',
+        id: 'country',
+        type: 'text',
+        placeholder: 'Country',
+        autoComplete: 'country'
+      },
+      value: '',
+      validation: {
+        required: true,
+      },
+      valid: false,
+      touched: false,
+    },
+    email: {
+      elementType: 'input',
+      elementConfig: {
+        name: 'email',
+        id: 'email',
+        type: 'email',
+        placeholder: 'Your email',
+        autoComplete: 'email'
+      },
+      value: '',
+      validation: {
+        required: true,
+      },
+      valid: false,
+      touched: false,
+    },
+    deliveryMethod: {
+      elementType: 'select',
+      elementConfig: {
+        name: 'deliverymethod',
+        id: 'deliverymethod',
+        options:[
+          {value: 'fastest', displayValue: 'Fastest'},
+          {value: 'cheapest', displayValue: 'Cheapest'}
+        ],
+        autoComplete: 'shipping'
+      },
+      valid: true,
+      validation: {},
+      value: 'fastest'
+    },
+  });
   
   const orderHandler = (event) => {
     event.preventDefault();
@@ -123,12 +132,12 @@ const ContactData = props => {
     }
 
     const order = {
-      ingredients: props.ings,
-      price: props.price,
+      ingredients: ings,
+      price: price,
       orderData: formData,
-      userId: props.userId
+      userId: userId
     };
-    props.onOrderBurger(order, props.token);
+    onOrderBurger(order, token);
   }
 
   const inputChangedHandler = (event, inputIdentifier) => {
@@ -177,7 +186,7 @@ const ContactData = props => {
         <Button btnType="Success" disabled={!formIsValid} clicked={orderHandler}>ORDER</Button>
     </form>
   );
-  if (props.loading) {
+  if (loading) {
     form = <Spinner />;
   }
   return (
@@ -189,20 +198,6 @@ const ContactData = props => {
   
 }
 
-const mapStateToProps = state => {
-  return {
-    ings: state.burgerBuilder.ingredients,
-    price: state.burgerBuilder.totalPrice,
-    loading: state.order.loading,
-    token: state.auth.token,
-    userId: state.auth.userId,
-  };
-}
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onOrderBurger: (orderData, token) =>  dispatch(actions.purchaseBurger(orderData, token)),
-  }
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withErrorhandler(ContactData, axios)));
+export default withRouter(withErrorhandler(ContactData, axios));

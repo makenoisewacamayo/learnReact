@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classes from './BuildControls.module.css';
 import BuildControl from './BuildControl/BuildControl';
 
@@ -28,20 +27,6 @@ const buildcontrols = (props) => {
       onClick={props.ordered}>{props.isAuth ? "ORDER NOW" : "MUST BE LOGGED TO ORDER"}</button>
     </div>
   );
-}
-
-buildcontrols.propTypes = {
-  price: PropTypes.number.isRequired,
-  purchasable: PropTypes.bool.isRequired,
-  ingredientAdded: PropTypes.func.isRequired,
-  ingredientRemoved: PropTypes.func.isRequired,
-  ordered:  PropTypes.func.isRequired,
-  disabled: PropTypes.shape({
-    salad: PropTypes.bool,
-    bacon: PropTypes.bool,
-    cheese: PropTypes.bool,
-    meat: PropTypes.bool,
-  }).isRequired
 }
 
 export default buildcontrols;

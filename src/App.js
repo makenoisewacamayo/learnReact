@@ -1,16 +1,13 @@
 import React, { useEffect, Suspense } from 'react';
-import  { Route, Switch, withRouter, Redirect } from 'react-router-dom'
-import { connect } from 'react-redux';
+import { Route, Switch, withRouter, Redirect } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux';
 import Layout from  './hoc/Layout/Layout'
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
+import Logout from './containers/Auth/Logout/Logout';
 import * as actions from './store/actions';
 
 const Auth = React.lazy( () => {
   return import('./containers/Auth/Auth');
-});
-
-const Logout = React.lazy( () => {
-  return import('./containers/Auth/Logout/Logout');
 });
 
 const Orders = React.lazy( () => {
@@ -23,10 +20,12 @@ const Checkout = React.lazy( () => {
 
 
 const App = props => {
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector(state => state.auth.token !== null);
+  
   useEffect(() => {
-    props.onCheckAuth();
-    // eslint-disable-next-line
-  },[]);
+    dispatch(actions.authCheckState());
+  },[ dispatch]);
 
 
   let routes = (
@@ -37,12 +36,12 @@ const App = props => {
     </Switch>
   )
 
-  if (props.isAuthenticated) {
+  if (isAuthenticated) {
     routes = (
       <Switch>
         <Route path="/checkout" render={props => <Checkout {...props}/>}></Route>
         <Route path="/orders" render={props => <Orders {...props}/>}></Route> 
-        <Route path="/logout" render={props => <Logout {...props}/>}></Route>
+        <Route path="/logout" component={Logout}></Route>
         <Route path="/auth" render={props => <Auth {...props}/>}></Route>
         <Route path="/" component={BurgerBuilder}></Route>
         <Redirect to="/" />
@@ -60,16 +59,4 @@ const App = props => {
 }
 
 
-const mapStateToProps = state => {
-  return {
-    isAuthenticated: state.auth.token !== null,
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onCheckAuth: () => dispatch(actions.authCheckState()),
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App));
+export default withRouter(App);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Aux from '../../hoc/Aux/Aux'
 import Burger from '../../components/Burger/Burger';
@@ -18,7 +18,6 @@ export const BurgerBuilder = props => {
   const dispatch = useDispatch();
   const onIngredientAdded =  (ingredient) => dispatch(actions.addIngredient(ingredient));
   const onIngredientRemoved =  (ingredient) => dispatch(actions.removeIngredient(ingredient));
-  const onInitIngredients = useCallback(() => dispatch(actions.initIngredients()), [dispatch  ]);
   const onInitPurchase = () => dispatch(actions.purchaseInit());
   const onSetAuthRedirectPath =  (path) => dispatch(actions.setAuthRedirectPath(path));
 
@@ -28,8 +27,8 @@ export const BurgerBuilder = props => {
   const isAuthenticated = useSelector(state => state.auth.token !== null);
 
   useEffect(() => {
-    onInitIngredients();
-  },[ onInitIngredients]);
+    dispatch(actions.initIngredients())
+  },[ dispatch]);
 
   
   

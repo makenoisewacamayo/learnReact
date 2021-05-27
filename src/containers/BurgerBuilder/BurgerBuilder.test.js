@@ -3,18 +3,20 @@ import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
 
 import { BurgerBuilder } from './BurgerBuilder';
-import BuildControls from '../../components/Burger/BuildControls/BuildControls';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 configure({ adapter: new Adapter()});
 
-describe("<BurgerBuilder />",() => {
+jest.mock('react-redux');
+
+describe("<BurgerBuilder without ingredient />",() => {
+  
   let wrapper;
   beforeEach(() => {
-    wrapper = shallow(<BurgerBuilder onInitIngredients={() => {}}/>);
+    wrapper = shallow(<BurgerBuilder/>);
   });
 
-  it('should render <BuildContrils /> if ing props are present', () => {
-    wrapper.setProps({ings: { salad: 0}});
-    expect(wrapper.find(BuildControls)).toHaveLength(1);
-  })
+  it('should render <Spinner /> if no ingredient are provided', () => {
+    expect(wrapper.find(Spinner)).toHaveLength(1);
+  });
 });

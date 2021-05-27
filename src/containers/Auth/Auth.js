@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import *  as actions from '../../store/actions' 
@@ -11,6 +11,16 @@ import { updateState } from '../../shared/utility';
 import checkValidate from '../../shared/validation';
 
 const Auth = props => {
+
+  const dispatch = useDispatch();
+  const onAuth = (email, password, isSignUp) => dispatch(actions.auth(email, password, isSignUp));
+
+  const loading = useSelector(state => state.auth.loading);
+  const error = useSelector(state => state.auth.error);
+  const isAuthenticated = useSelector(state => state.auth.token !== null);
+  const building = useSelector(state => state.burgerBuilder.building);
+  const authRedirectPath = useSelector(state => state.auth.authRedirectPath);
+
   const [isSignUp, setIsSignUp] = useState(true);
   const [authForm, setAuthForm] = useState({
     email: {
@@ -48,12 +58,12 @@ const Auth = props => {
       touched: false,
     },
   });
-  const { onSetAuthRedirectPath, building, authRedirectPath } = props;
+
   useEffect(() => {
     if (!building && authRedirectPath !== '/') {
-      onSetAuthRedirectPath();
+      dispatch(actions.setAuthRedirectPath('/'));
     }
-  },[ onSetAuthRedirectPath, building, authRedirectPath]);
+  },[ dispatch, building, authRedirectPath]);
 
    
   
@@ -74,7 +84,7 @@ const Auth = props => {
     const email = authForm.email.value;
     const password = authForm.password.value;
     const method = isSignUp;
-    props.onAuth(email, password, method);
+    onAuth(email, password, method);
   }
 
   const switchAuthModeHandler = () => {
@@ -110,15 +120,15 @@ const Auth = props => {
   />
   })
 
-  if (props.loading) {
+  if (loading) {
     form = <Spinner />
   }
   
-  const errorMessage = props.error ? <div className={classes.AuthError}>{props.error.message}</div> : null; 
+  const errorMessage = error ? <div className={classes.AuthError}>{error.message}</div> : null; 
 
   let authRedirect = null;
-  if (props.isAuthenticated ) {
-    authRedirect = <Redirect to={props.authRedirectPath} />
+  if (isAuthenticated ) {
+    authRedirect = <Redirect to={authRedirectPath} />
   }
 
   return (
@@ -137,22 +147,4 @@ const Auth = props => {
   
 }
 
-
-const mapStateToProps = state => {
-  return {
-    loading: state.auth.loading,
-    error: state.auth.error,
-    isAuthenticated: state.auth.token !== null,
-    building: state.burgerBuilder.building,
-    authRedirectPath: state.auth.authRedirectPath,
-  }
-}
-
-const mapDistachToProps = dispatch => {
-  return {
-    onAuth: (email, password, isSignUp) => dispatch(actions.auth(email, password, isSignUp)),
-    onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/')),
-  }
-}
-
-export default connect(mapStateToProps, mapDistachToProps)(Auth);
+export default Auth;

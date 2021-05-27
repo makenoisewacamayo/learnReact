@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Button from '../../UI/Button/Button';
 import Aux from '../../../hoc/Aux/Aux';
 
@@ -25,18 +24,6 @@ const orderSummary = props => {
       <Button btnType="Success" clicked={props.continuePurchase}>Continue</Button>
     </Aux>
   );
-}
-
-orderSummary.propTypes = {
-  ingredients: PropTypes.shape({
-    salad: PropTypes.number,
-    bacon: PropTypes.number,
-    cheese: PropTypes.number,
-    meat: PropTypes.number,
-  }).isRequired,
-  price: PropTypes.number.isRequired,
-  cancelPurchase: PropTypes.func.isRequired,
-  continuePurchase: PropTypes.func.isRequired,
 }
 
 export default orderSummary;
